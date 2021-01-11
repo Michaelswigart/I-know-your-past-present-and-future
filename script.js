@@ -13,10 +13,9 @@ $("#scheduling .row").each(function(){
     })
 })
 localStorage.setItem("scheduling",JSON.stringify(tempArry))
-}
+}// locil scheduling   get item
 var loadScheduler = function(){
 
 }
 $("#currentDay").text(moment().format("dddd, MMMM Do"));
 // every time user clicked save button
-// locil scheduling get item
