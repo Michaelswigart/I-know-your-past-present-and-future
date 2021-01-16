@@ -1,7 +1,5 @@
 
- //var hour_id = this.previousElementSibling.id;
-  //var hour_text = this.previousElementSibling.value;
-  
+var schedulerArray = localStorage.getItem("scheduling") !== null ? JSON.parse(localStorage.getItem("scheduling")) : [];
 
 
 const currentHour = moment().hour();
@@ -31,11 +29,12 @@ function colorBlocks() {
   }
 }
 var saveScheduler = function(){
+
 var tempArry = []
 $("#scheduling .row").each(function(){
     var rowTime = $(this).data("time")
-    var rowTask = $(this).find("textarea")  //div:nth-child(2)
-    var rowTaskText = rowTask.text()
+    var rowTask = $(this).find("textarea") //div:nth-child(2)
+    var rowTaskText = rowTask.val().trim()
     tempArry.push({
         [rowTime]: rowTaskText
     })
@@ -43,35 +42,35 @@ $("#scheduling .row").each(function(){
 
  localStorage.setItem("scheduling",JSON.stringify(tempArry));
 
-let here = ["nine", "ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen" ]
+
 
 }
-//  var getMore = localStorage.getItem("scheduling");
 
 
 // local scheduler   get item
 var loadScheduler = function(){
-
+ if (schedulerArray.length === 0 ){return}
+ $.each(schedulerArray, function(index, objData){
+     var hour = Object.keys(objData)[0];
+     var task = Object.values(objData)[0];
+     var targetRow = $("#scheduling").find(`[data-time=${hour}]`);
+     targetRow.find("textarea").text(task);
+ })
 }
 $("#currentDay").text(moment().format("dddd, MMMM Do"));
 // every time user clicked save button
 
+   
 
-$("nine").val(localStorage.getItem("9"));   
+// function backgroundUpdate() {
+//      var currentTime = moment().hours() (currentTime)    (".time-block").each(function(){ var id = $(this).attr("id") 
 
-function backgroundUpdate() {
-     var currentTime = moment().hours() (currentTime)    (".time-block").each(function(){ var id = $(this).attr("id") 
+//       if (id < currentTime) { $(this).addClass("past") } else if(id === currentTime) 
+//       {  $(this).addClass("present") }
+//        else  { $(this).addClass("future")}  
 
-      if (id < currentTime) { $(this).addClass("past") } else if(id === currentTime) 
-      {  $(this).addClass("present") }
-       else  { $(this).addClass("future")}  
+// })}
 
-})}
-
-// (".saveBtn").on('click', function(){
-//     var intel = $(this).siblings(".description").val()
-//      var time = $(this).parent().attr("id") localStorage.setItem(time, intel) }
-     
-//      )[i]
-// $("#10 .description").val(localStorage.getItem("10"))
+$(".saveBtn").on("click",saveScheduler);
  
+ loadScheduler();
